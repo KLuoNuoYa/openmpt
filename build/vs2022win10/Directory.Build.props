@@ -10,8 +10,18 @@
 		<BuildPassReferences>true</BuildPassReferences>
 		<AllowParallelCompileInReferencedProjects>false</AllowParallelCompileInReferencedProjects>
 	</PropertyGroup>
+	<PropertyGroup>
+		<!--
+			Force static CRT usage across the OpenMPT solution tree so the final
+			TrackerPlayback.dll depends as little as possible on external MSVC
+			runtime DLLs.
+		-->
+		<RuntimeLibrary Condition="'$(Configuration)'=='Debug' or '$(Configuration)'=='DebugShared' or '$(Configuration)'=='Checked' or '$(Configuration)'=='CheckedShared'">MultiThreadedDebug</RuntimeLibrary>
+		<RuntimeLibrary Condition="'$(RuntimeLibrary)'==''">MultiThreaded</RuntimeLibrary>
+	</PropertyGroup>
 	<ItemDefinitionGroup>
 		<ClCompile>
+			<RuntimeLibrary>$(RuntimeLibrary)</RuntimeLibrary>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 		</ClCompile>
 		<CustomBuild>
